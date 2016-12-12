@@ -101,22 +101,4 @@ class LinkController extends Controller
                                'page'         =>  'new.php'
                               ]);
     }
-
-    /**
-     * Show certain link.
-     *
-     * @return Response
-     */
-    public function show($id)
-    {
-
-        $link = Link::find($id);        
-        
-        return view('layout', [
-                               'page'             => 'show.php',
-                               'hided_link'       => $link->hided_link,
-                               'redirecting_link' => $link->redirecting_link
-                              ]);
-    }
-
 }

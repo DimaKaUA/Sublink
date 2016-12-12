@@ -8,7 +8,7 @@ function tData(obj) {
     var sec = addZero(t.getSeconds());
     var result = y + "-" + mon + "-" + d + " " + h + ":" + min + ":" + sec;
     obj.expiry_date.value = result;
-    }
+}
 
 function addZero(n) {
     return n > 9 ? n : (+n >= 0) ? "0" + n : n;
