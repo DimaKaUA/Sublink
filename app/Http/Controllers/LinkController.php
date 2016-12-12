@@ -95,7 +95,6 @@ class LinkController extends Controller
                                    'page'         =>  'new.php',
                                    'redirecting_link' => $link->redirecting_link 
                                   ]);
-            //return redirect()->route('show', ['id' => $link->id]);
         };
 
         return view('layout', [
