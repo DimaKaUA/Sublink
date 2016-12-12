@@ -1,24 +1,15 @@
 function tData(obj) {
-    var s;
-    var t=new Date();
-    var y=t.getFullYear();
-    var d=t.getDate();
-    var mon=t.getMonth();
-    switch (mon)
-    {
-      case 0: s="января"; break;
-      case 1: s="февраля"; break;
-      case 2: s="марта"; break;
-      case 3: s="апреля"; break;
-      case 4: s="мае"; break;
-      case 5: s="июня"; break;
-      case 6: s="июля"; break;
-      case 7: s="августа"; break;
-      case 8: s="сентября"; break;
-      case 9: s="октября"; break;
-      case 10: s="ноября"; break;
-      case 11: s="декабря"; break;
+    var t = new Date();
+    var y = t.getFullYear();
+    var d = t.getDate();
+    var mon = t.getMonth() + 1;
+    var h = t.getHours();
+    var min = addZero(t.getMinutes());
+    var sec = addZero(t.getSeconds());
+    var result = y + "-" + mon + "-" + d + " " + h + ":" + min + ":" + sec;
+    obj.expiry_date.value = result;
     }
-    var result=d+" "+s+" "+y;
-    obj.date.value=result;
-    }
+
+function addZero(n) {
+    return n > 9 ? n : (+n >= 0) ? "0" + n : n;
+}

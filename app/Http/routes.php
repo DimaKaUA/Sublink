@@ -27,7 +27,3 @@ $app->post('/{redirecting_link}', [
     'as' => 'redirectWithPass', 'uses' => 'LinkController@redirect'
 ]);
 
-
-$app->get('/show/{id}', [
-    'as' => 'show', 'uses' => 'LinkController@show'
-]);

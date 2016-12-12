@@ -16,26 +16,36 @@ class LinkController extends Controller
      *
      * @return Response
      */
-    public function redirect($redirecting_link, Request $request, Response $response)
+    public function redirect($redirecting_link, Request $request)
     {
         $link_for_form = $redirecting_link;
         $redirecting_link = $_SERVER['HTTP_HOST'] . '/' . $redirecting_link; 
         $link = Link::where('redirecting_link', $redirecting_link)->firstOrFail();
-        if ($link->password) {
-            if ($request->isMethod('get')) {
-                return view('password', ['error' => '', 'redirecting_link' => $link_for_form]);
-            }
-            if ($request->isMethod('post') && $link->password !== $request->password) {
-                return view('password', ['error' => 'wrong password', 'redirecting_link' => $link_for_form]);;
-            }
-        }
+        
         if ($link->expiry_date) {
             date_default_timezone_set('Europe/Kiev'); 
             $current_date = date("Y-m-d H:i:s");
             if (strtotime($link->expiry_date) < strtotime($current_date)) {
-                return response(view('404'), 404);
+                return abort(404);
             } 
         }
+
+        if ($link->password) {
+            if ($request->isMethod('get')) {
+                return view('layout', [
+                                       'page'             => 'password.php',
+                                       'redirecting_link' => $link_for_form
+                                      ]);
+            }
+            if ($request->isMethod('post') && !password_verify($request->password, $link->password)) {
+                return view('layout', [
+                                       'page'             => 'password.php',
+                                       'error'            => 'wrong password', 
+                                       'redirecting_link' => $link_for_form
+                                      ]);
+            }
+        }
+        
         return redirect($link->hided_link);
     }
 
@@ -59,31 +69,38 @@ class LinkController extends Controller
                 $messages = $validator->messages();
                 $message_link = $messages->first('hided_link');
                 $message_date = $messages->first('expiry_date');
-                return view('new', [
-                    'hided_link'   =>  $request->hided_link,
-                    'expiry_date'  =>  $request->expiry_date,
-                    'message_link' =>  $message_link,
-                    'message_date' =>  $message_date
-                ]);
+                return view('layout', [
+                                       'page'         =>  'new.php',
+                                       'hided_link'   =>  $request->hided_link,
+                                       'expiry_date'  =>  $request->expiry_date,
+                                       'message_link' =>  $message_link,
+                                       'message_date' =>  $message_date
+                                      ]);
             }
 
             $id = md5(uniqid(rand(), true));
             $link = new Link();
             $link->hided_link = $request->hided_link;
             $link->redirecting_link = $_SERVER['HTTP_HOST'] . '/' . $id;
-            $link->expiry_date = $request->expiry_date;
-            $link->password = $request->password;
+            if ($request->expiry_date === '') {
+                $link->expiry_date = null;
+            } else {
+                $link->expiry_date = $request->expiry_date;
+            }
+            $hash = password_hash($request->password, PASSWORD_DEFAULT);
+            $link->password = $hash;
             $link->save();
 
-            return redirect()->route('show', ['id' => $link->id]);
+            return view('layout', [
+                                   'page'         =>  'new.php',
+                                   'redirecting_link' => $link->redirecting_link 
+                                  ]);
+            //return redirect()->route('show', ['id' => $link->id]);
         };
 
-        return view('new', [
-                'hided_link'   =>  '',
-                'expiry_date'  =>  '',
-                'message_link' =>  '',
-                'message_date' =>  '',
-            ]);
+        return view('layout', [
+                               'page'         =>  'new.php'
+                              ]);
     }
 
     /**
@@ -96,23 +113,11 @@ class LinkController extends Controller
 
         $link = Link::find($id);        
         
-        return view('show', [
-                             'hided_link' => $link->hided_link,
-                             'redirecting_link' => $link->redirecting_link
-                            ]);
+        return view('layout', [
+                               'page'             => 'show.php',
+                               'hided_link'       => $link->hided_link,
+                               'redirecting_link' => $link->redirecting_link
+                              ]);
     }
 
-    /**
-     * Check the password.
-     *
-     * @return Response
-     */
-    public function checkPassword($redirecting_link)
-    {
-        if ($request->isMethod('post')) {
-            # code...
-        }
-
-        return view('password', ['massage' => '']);
-    }
 }

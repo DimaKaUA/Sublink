@@ -17,7 +17,7 @@ class CreateLinksTable extends Migration
             $table->increments('id');
             $table->string('hided_link');
             $table->string('redirecting_link');
-            $table->datetimeTz('expiry_date');
+            $table->datetimeTz('expiry_date')->nullable();
             $table->string('password');
             $table->softDeletes();
             $table->timestamps();
