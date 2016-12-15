@@ -15,12 +15,30 @@
 <div class="form-group">
 	<label for="password">Password:</label>
 	<input type="password" name="password" class="form-control" id="pass" placeholder="Password">
+	<p class="help-block"> <?php if(isset($message_password)) echo $message_password; ?> </p>
 </div>
-		<button class="btn btn-primary" type="submit">Generate link</button>
+<div class="form-group">
+	<button class="btn btn-primary" type="submit">Generate link</button>
 
+<?php  if(isset($users_links)) : ?>
+	<div class="dropdown">
+ 		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Stored links
+	</button>
+		<ul class="dropdown-menu">
+			<?php   
+	            foreach ($users_links as $link) {
+			        echo "<li><a href='{$link->hided_link}'>{$link->hided_link}</a></li>";
+			    }    
+			?>
+		</ul>
+		
+	</div>		
+	<?php endif ?>
+</div>
 </form>
-
 <div class="text-center" >
-	<h1>Take your new link here:</h1>
-	<h2 class="text-success"><?php if(isset($redirecting_link)) echo $redirecting_link; ?></h4>
+	<?php if(isset($redirecting_link)) : ?>
+	<h1>Take your new link:</h1>
+	<h2 class="text-success"><?php echo $redirecting_link; ?></h4>
+	<?php endif ?>
 </div>

@@ -33,4 +33,12 @@ class Link extends Model
     protected $hidden = [
         'password',
     ];
+
+    /**
+     * Get the User that owns the link.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
