@@ -21,7 +21,7 @@ class LinkController extends Controller
     public function redirect($redirecting_link, Request $request)
     {
         $link_for_form = $redirecting_link;
-        $redirecting_link = $_SERVER['HTTP_HOST'] . '/' . $redirecting_link; 
+        $redirecting_link = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $redirecting_link; 
         $link = Link::where('redirecting_link', $redirecting_link)->firstOrFail();
         
         if ( $link->expiry_date ) {
@@ -100,7 +100,7 @@ class LinkController extends Controller
             $id = md5(uniqid(rand(), true));
             $link = new Link();
             $link->hided_link = $request->hided_link;
-            $link->redirecting_link = $_SERVER['HTTP_HOST'] . '/' . $id;
+            $link->redirecting_link = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $id;
 
             if ( $request->expiry_date === '' ) {
                 $link->expiry_date = null;
@@ -113,8 +113,10 @@ class LinkController extends Controller
                 $link->password = $hash;
             }
 
-            $user->links()->save($link);
-            $users_links = $user->links;
+            if ( isset($user) ) {
+                $user->links()->save($link);
+                $users_links = $user->links;
+            }
             
             $link->save();
 
