@@ -20,7 +20,7 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-			<a href="/" class="navbar-brand">Hide link</a>
+			<a href="/" class="navbar-brand">Link of link</a>
 		</div>
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">

@@ -96,7 +96,7 @@ class LinkController extends Controller
                                       ]);
             }
 
-            $id = md5(uniqid(rand(), true));
+            $id = substr(md5(uniqid(rand(), true)), 0, 10);
             $link = new Link();
             $link->hided_link = $request->hided_link;
             $link->redirecting_link = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $id;
