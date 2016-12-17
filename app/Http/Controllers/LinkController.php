@@ -60,14 +60,13 @@ class LinkController extends Controller
     public function new(Request $request)
     {
         if ( Sessions::startSession() ) {
-            if ( !isset($_SESSION['current_user']) ) {
+            if ( isset($_SESSION['current_user']) && $user = User::find($_SESSION['current_user'])) {
+                $users_name = $user->name;
+                $users_links = $user->links;
+            } else { 
                 $users_links = null;
                 $users_name = null;
                 Sessions::destroySession();
-            } else {
-                $user = User::find($_SESSION['current_user']);
-                $users_name = $user->name;
-                $users_links = $user->links;
             }
         }
 

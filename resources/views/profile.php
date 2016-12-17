@@ -5,9 +5,10 @@
 		<?php   
 			foreach ($users_links as $link) :
 		?>
-			<a href="<?php echo "{$link->hided_link}!"; ?>" class="list-group-item list-group-item-action ">
+			<a href="<?php echo "{$link->hided_link}"; ?>" class="list-group-item list-group-item-action ">
 				<h5 class="list-group-item-heading"><?php echo "{$link->hided_link}"; ?></h5>
 				<p class="list-group-item-text"><?php echo "{$link->redirecting_link}"; ?></p>
+				<p class="list-group-item-text"><?php if(isset($link->expiry_date)) echo "{$link->expiry_date}"; ?></p>
 				</a>
 			<?php endforeach ?>   
 	</div>

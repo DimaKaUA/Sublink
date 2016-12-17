@@ -10,6 +10,13 @@ function tData(obj) {
     obj.expiry_date.value = result;
 }
 
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 function addZero(n) {
     return n > 9 ? n : (+n >= 0) ? "0" + n : n;
 }
