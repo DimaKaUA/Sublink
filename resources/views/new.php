@@ -20,7 +20,7 @@
 <div class="form-group">
 	<button class="btn btn-primary" type="submit">Generate link</button>
 
-<?php  if(isset($users_links)) : ?>
+<?php  if( isset($users_links) && count($users_links)) : ?>
 	<div class="dropdown">
  		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Stored links
 	</button>
@@ -33,7 +33,7 @@
 		</ul>
 		
 	</div>		
-	<?php endif ?>
+<?php endif ?>
 </div>
 </form>
 <div class="text-center" >

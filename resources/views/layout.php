@@ -32,6 +32,12 @@
 				<li>
 					<a href="/user/sign_out">Sign out</a>
 				</li>
+				<li>
+					<a href="/user/profile">
+						My profile
+						<span class="label label-success" id="online">online</span>
+					</a>
+				</li>
 			<?php else : ?>
 				<li>
 					<a href="/user/sign_up">Sign up</a>
@@ -40,12 +46,6 @@
 					<a href="/user/sign_in">Sign in</a>
 				</li>
 			<?php endif ?>
-				<li>
-					<a href="/user/profile">
-						My profile
-						<span class="label label-success" id="online">online</span>
-					</a>
-				</li>
 			</ul>
 		</div>
 	</div>
@@ -72,11 +72,19 @@
 			<div class="col-sm-2" >
 			</div>
 			<div class="col-sm-8" >
+			<?php if ( session_id() ) : ?>
 				<p>
 					<a href="/user/profile">My profile</a>
 					·
 					<a href="/user/sign_out">Sign out</a>
 				</p>
+			<?php else : ?>
+				<p>
+					<a href="/user/sign_up">Sign up</a>
+					·
+					<a href="/user/sign_in">Sign in</a>
+				</p>	
+			<?php endif ?>
 			</div>
 			<div class="col-sm-2" >
 			</div>

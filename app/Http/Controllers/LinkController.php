@@ -112,20 +112,20 @@ class LinkController extends Controller
                 $link->password = $hash;
             }
 
+            $link->save();
+
             if ( isset($user) ) {
                 $user->links()->save($link);
-                $users_links = $user->links;
             }
             
-            $link->save();
 
             return view('layout', [
                                    'page'             => 'new.php',
                                    'redirecting_link' => $link->redirecting_link,
-                                   'users_links'      => $users_links,
+                                   'users_links'      => $user->links,
                                    'users_name'       => $users_name,
                                   ]);
-        };
+        }
 
         return view('layout', [
                                'page'        => 'new.php',

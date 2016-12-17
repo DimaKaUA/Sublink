@@ -46,9 +46,9 @@ class AuthController extends Controller
 
             $user = new User();
             $user->name = $request->name;
-            $user->password = $request->password;
+            $hash = password_hash($request->password, PASSWORD_DEFAULT);
+            $user->password = $hash;
             $user->email = $request->email;
-            $user->remember_token = $user->email . $user->password;
             $user->save();
         
             return redirect()->route('sign_in');
@@ -87,16 +87,25 @@ class AuthController extends Controller
             }
 
             if ( Sessions::startSession() ) {
-                $remember_token = $request->email . $request->password;
-                $user = User::where('remember_token', $remember_token)->first();
+                $user = User::where('email', $request->email)->first();
+                
+                if ( $user ) {
 
-                if ($user) {
-                    $_SESSION['current_user'] = $user->id;
-                } else {
-                    return view('layout', [
+                    if ( !password_verify($request->password, $user->password) ) {
+                        return view('layout', [
                                            'page'             =>  'sign_in.php',
                                            'email'            =>  $request->email,
-                                           'message_password' =>  'wrong password'
+                                           'message_password' =>  'wrong password!'
+                                          ]);
+                    }
+
+                    $_SESSION['current_user'] = $user->id;
+
+                } else {
+                    return view('layout', [
+                                           'page'          =>  'sign_in.php',
+                                           'email'         =>  $request->email,
+                                           'message_email' =>  'given email is not registered',
                                           ]);
                 }
 
